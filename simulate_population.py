@@ -8,12 +8,9 @@ from datetime import datetime
 import os
 import simulation_tools as st
 
-# aaa
 #parser json -  parametru
 # DEADLINE 16 KWIETNIA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
 # próba komentarza
-
-
 
 # Funkcja aktualizacji max_fitness na podstawie wielkości populacji
 # porobić symulacje z różnym sd dla opt_genotypu i pop_genotypu
