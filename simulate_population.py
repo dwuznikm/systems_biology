@@ -15,7 +15,7 @@ import simulation_tools as st
 
 # Funkcja aktualizacji max_fitness na podstawie wielkości populacji
 # porobić symulacje z różnym sd dla opt_genotypu i pop_genotypu
-# pca
+# ZROBIE PCA OBIECUJE
 
 def simulate(N, n, time, opt_genotype_sd=1, pop_genotype_sd=0.5, mi=np.random.random()):
   # Create a folder to store the results
