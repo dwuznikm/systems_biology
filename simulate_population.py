@@ -17,6 +17,7 @@ import simulation_tools as st
 # porobić symulacje z różnym sd dla opt_genotypu i pop_genotypu
 # ZROBIE PCA OBIECUJE
 
+
 def simulate(N, n, time, opt_genotype_sd=1, pop_genotype_sd=0.5, mi=np.random.random()):
   # Create a folder to store the results
   current_time = datetime.now().strftime("%d.%m.%Y-%H-%M-%S")
@@ -34,7 +35,7 @@ def simulate(N, n, time, opt_genotype_sd=1, pop_genotype_sd=0.5, mi=np.random.ra
       genotype_df.loc[i] = genotype
       phenotype_df.loc[i] = st.fitness(optimal_genotype, genotype)
 
-  #pętla 'życia' osobnika
+  # life loop
 
   population_size = {'x':[], 'y':[]}
   phenotypes = [phenotype_df.mean()]
