@@ -10,8 +10,8 @@ import simulation_tools as st
 
 
 #parser json -  parametru
-# DEADLINE 9 KWIETNIA!!!
-
+# DEADLINE 16 KWIETNIA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
+# próba githuba
 
 # Funkcja aktualizacji max_fitness na podstawie wielkości populacji
 # porobić symulacje z różnym sd dla opt_genotypu i pop_genotypu
