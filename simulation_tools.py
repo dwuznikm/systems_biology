@@ -30,7 +30,7 @@ def mutation(mi, genotype, strenght):
 
 
 def calculate_optimal_genotype(mi, genotype, strenght, n):
-  p = np.random.normal(loc=0.6, scale=strenght, size=n)
+  p = np.random.normal(loc=0.3, scale=strenght, size=n)
   genotype += p
   return genotype
 
@@ -38,14 +38,11 @@ def children_roullete(fitness, max_fitness):
   exponent = (max_fitness - fitness)/15
   l = np.exp(exponent)
   children_amount = np.random.poisson(lam=l)
-  #if children_amount > 3:
-  #  return 3
-  #else:
   return children_amount
 
 # zmienić z liniowej
 def calculate_max_fitness(population):
-  return max(25 - population * 0.04, 2)
+  return max(15 - population * 0.02, 2)
 
 
 def create_plot(values, time, subfolder_path, data_type):
@@ -89,8 +86,42 @@ def perform_pca(population_list, optimal_genotype_df):
     pca_list.append(pca_df)
   return pca_list
 
+def two_dim_scatter(df_list, opt_df, time, subfolder_path):
+  fig, ax = plt.subplots(figsize=(10, 7))
+  max_x = 0
+  max_y = 0
+  min_x = 0
+  min_y= 0
+  for df in df_list:
+    maximum_x = df["cecha0"].max()
+    maximum_y = df["cecha1"].max()
+    if maximum_x > max_x:
+      max_x = maximum_x
+    if maximum_y > max_y:
+      max_y = maximum_y
 
-def pca_scatter(df_list, time):
+  for df in df_list:
+    minimum_x = df["cecha0"].min()
+    minimum_y = df["cecha1"].min()
+    if minimum_x < min_x:
+      min_x = minimum_x
+    if minimum_y < min_y:
+      min_y = minimum_y
+
+  def update(frame):
+      ax.clear()
+      ax.scatter(df_list[frame]['cecha0'], df_list[frame]['cecha1'], color='blue', label='Population', alpha=0.5)
+      ax.scatter(opt_df['cecha0'].iloc[frame], opt_df['cecha1'].iloc[frame], color='red', marker='s', s=100, label='Optimal Genotype')
+      ax.set_title(f'Genotypy osobników w pokoleniu {str(frame)}')
+      ax.tick_params(axis='x')
+      ax.set_ylim(1.15*min_y, 1.15 * max_y)
+      ax.set_xlim(1.15*min_x, 1.15 * max_x)
+
+  frames = range(time+1)
+  animation = FuncAnimation(fig, update, frames=frames, interval=500)
+  animation.save(os.path.join(subfolder_path, f'2d.gif'), writer='pillow')
+
+def pca_scatter(df_list, time, subfolder_path):
   fig, ax = plt.subplots(figsize=(10, 7))
   max_x = 0
   max_y = 0
@@ -123,5 +154,4 @@ def pca_scatter(df_list, time):
     
   frames = range(time+1)
   animation = FuncAnimation(fig, update, frames=frames, interval=500)
-  animation.save("proba.gif", writer='pillow')
-  
+  animation.save(os.path.join(subfolder_path, f'2d.gif'), writer='pillow')

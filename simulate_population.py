@@ -76,17 +76,22 @@ def simulate(N, n, time, opt_genotype_sd=1, pop_genotype_sd=0.5, mi=random.unifo
 
   phenotypes_values = [series.values[0] for series in phenotypes]
 
-  # st.create_plot(phenotypes_values, time, subfolder_path, data_type='fitness')
-  # st.create_plot(population_sizes, time, subfolder_path, data_type='population')
-  pca_pop_and_opt_gen = st.perform_pca(pca_df_list, opt_df)
-  st.pca_scatter(pca_pop_and_opt_gen, time)
+  st.create_plot(phenotypes_values, time, subfolder_path, data_type='fitness')
+  st.create_plot(population_sizes, time, subfolder_path, data_type='population')
+  if n!=2:
+    pca_pop_and_opt_gen = st.perform_pca(pca_df_list, opt_df)
+    st.pca_scatter(pca_pop_and_opt_gen, time, subfolder_path)
+  elif n==2:
+    st.two_dim_scatter(pca_df_list, opt_df, time, subfolder_path)
+  
+  
   
   
 
 N0=500
-n=5
+n=2
 time=100
-opt_genotype_sd=0.3
+opt_genotype_sd=0.5
 pop_genotype_sd=0.8
 
 simulate(N0, n, time, opt_genotype_sd, pop_genotype_sd)
