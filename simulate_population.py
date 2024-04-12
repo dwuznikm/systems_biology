@@ -41,9 +41,7 @@ def simulate(N, n, time, opt_genotype_sd=1, pop_genotype_sd=0.5, mi=random.unifo
   population_size = {'x':[], 'y':[]}
   phenotypes = [phenotype_df.mean()]
   population_sizes = [phenotype_df.shape[0]]
-  genotype_copy =  genotype_df.copy()
-  #genotype_copy.loc[len(genotype_copy)] = optimal_genotype
-  pca_df_list=[(st.pca(genotype_copy))]
+  pca_df_list=[genotype_df.copy()]
   opt_df = pd.DataFrame(columns=[f'cecha{str(i)}' for i in range(n)])
   opt_df.loc[0] = optimal_genotype
 
@@ -71,11 +69,8 @@ def simulate(N, n, time, opt_genotype_sd=1, pop_genotype_sd=0.5, mi=random.unifo
     if genotype_df.shape[0] == 0:
       time = pokolenie
       break
-    genotype_copy =  genotype_df.copy()
-    #genotype_copy.loc[len(genotype_copy)] = new_optimal_genotype
-    pca_df_list.append(st.pca(genotype_copy))
+    pca_df_list.append(genotype_df.copy())
     opt_df.loc[len(opt_df)]=new_optimal_genotype
-
 
     print(f'Pokolenie {pokolenie+1} AVG Fitness: {round(phenotype_df.mean().values[0], 2)}, max_fitness: {max_fitness} Population: {phenotype_df.shape[0]}')
 
@@ -83,17 +78,15 @@ def simulate(N, n, time, opt_genotype_sd=1, pop_genotype_sd=0.5, mi=random.unifo
 
   # st.create_plot(phenotypes_values, time, subfolder_path, data_type='fitness')
   # st.create_plot(population_sizes, time, subfolder_path, data_type='population')
-  
-  opt_pca = st.pca(opt_df)
-  print(opt_pca)
-  st.pca_scatter(pca_df_list, opt_pca, time)
+  pca_pop_and_opt_gen = st.perform_pca(pca_df_list, opt_df)
+  st.pca_scatter(pca_pop_and_opt_gen, time)
   
   
 
 N0=500
 n=5
 time=100
-opt_genotype_sd=0.1
+opt_genotype_sd=0.3
 pop_genotype_sd=0.8
 
 simulate(N0, n, time, opt_genotype_sd, pop_genotype_sd)

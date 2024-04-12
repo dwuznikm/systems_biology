@@ -7,10 +7,7 @@ from matplotlib.animation import FuncAnimation
 from datetime import datetime
 import os
 
-#pca
 from sklearn import datasets, decomposition
-from sklearn.decomposition import PCA
-
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
@@ -27,14 +24,13 @@ def fitness(optimal_genotype, genotype):
 
 
 def mutation(mi, genotype, strenght):
-  if np.random.random() < mi:
-    p = np.random.normal(loc=0, scale=strenght)
-    genotype += p
+  p = np.random.normal(loc=0, scale=strenght)
+  genotype += p
   return genotype
 
 
 def calculate_optimal_genotype(mi, genotype, strenght, n):
-  p = np.random.normal(loc=0.2, scale=strenght, size=n)
+  p = np.random.normal(loc=0.6, scale=strenght, size=n)
   genotype += p
   return genotype
 
@@ -81,17 +77,20 @@ def create_plot(values, time, subfolder_path, data_type):
   fig.savefig(os.path.join(subfolder_path, f'{data_type}_final.jpg'))
 
 
-def pca(df, n_of_components=2):
-  scaler = StandardScaler()
-  scaled_data = scaler.fit_transform(df)
-  # Wykonanie PCA
-  pca = PCA(n_of_components)
-  pca_result = pca.fit_transform(scaled_data)
-  # Konwersja wyników PCA do DataFrame
-  pca_df = pd.DataFrame(data=pca_result, columns=['PCA1', 'PCA2'])
-  return pca_df
+def perform_pca(population_list, optimal_genotype_df):
+  pca_list = []
+  for time_step, (population_df, optimal_genotype_row) in enumerate(zip(population_list, optimal_genotype_df.iterrows())):
+    population_array = population_df.values    
+    optimal_genotype = optimal_genotype_row[1].values.reshape(1, -1)
+    data = np.vstack((population_array, optimal_genotype))
+    pca = PCA(n_components=2)
+    pca_result = pca.fit_transform(data)
+    pca_df = pd.DataFrame(data=pca_result, columns=['PCA1', 'PCA2'])
+    pca_list.append(pca_df)
+  return pca_list
 
-def pca_scatter(df_list, opt_df, time):
+
+def pca_scatter(df_list, time):
   fig, ax = plt.subplots(figsize=(10, 7))
   max_x = 0
   max_y = 0
@@ -115,11 +114,8 @@ def pca_scatter(df_list, opt_df, time):
 
   def update(frame):
       ax.clear()
-      # ax.scatter(df_list[frame]['PCA1'].iloc[range(df_list[frame].shape[0] - 1)], df_list[frame]['PCA2'].iloc[range(df_list[frame].shape[0] - 1)], color='red', s=5)
-      # ax.scatter(df_list[frame]['PCA1'].iloc[df_list[frame].shape[0]-1], df_list[frame]['PCA2'].iloc[df_list[frame].shape[0]-1], color='green', s=100, marker='s')
-      ax.scatter(df_list[frame]['PCA1'], df_list[frame]['PCA2'], color='red', s=5)
-      ax.scatter(opt_df['PCA1'].iloc[frame], opt_df['PCA2'].iloc[frame], color='green', marker='s', s=100)
-      ax.set_title(f'Genotypy osobników w pokoleniu {str(frame)}')
+      ax.scatter(df_list[frame]['PCA1'][:-1], df_list[frame]['PCA2'][:-1], color='blue', label='Population', alpha=0.5)
+      ax.scatter(df_list[frame].iloc[-1]['PCA1'], df_list[frame].iloc[-1]['PCA2'], color='red', marker='s', s=100, label='Optimal Genotype')
       ax.tick_params(axis='x')
       ax.set_ylim(1.15*min_y, 1.15 * max_y)
       ax.set_xlim(1.15*min_x, 1.15 * max_x)
