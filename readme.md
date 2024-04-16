@@ -14,13 +14,23 @@ Niestety, problematycznym narzędziem okazało się być PCA, które nie wizuali
 
 
 Parametry:
-\\N0 - populacja startowa
-\\n - liczba cech
-\\time - długość trwania populacji - liczba pokoleń
-\\opt_genotype_sd - odchylenie standardowe z jakim mutuje optymalny genotyp
-\\speed - szybkość zmian
-\\pop_genotype_sd - odchylenie standardowe z jakim mutują osobniki w populacji
-\\resources - tryb zasobów środowiska
-\\meteor_chance - szansa katastrofy naturalnej
-\\strength - 
-\\mi - 
+
+N0 - populacja startowa
+
+n - liczba cech
+
+time - długość trwania populacji - liczba pokoleń
+
+opt_genotype_sd - odchylenie standardowe z jakim mutuje optymalny genotyp
+
+speed - szybkość zmian
+
+pop_genotype_sd - odchylenie standardowe z jakim mutują osobniki w populacji
+
+resources - tryb zasobów środowiska
+
+meteor_chance - szansa katastrofy naturalnej
+
+strength - 
+
+mi - 
