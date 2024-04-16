@@ -32,11 +32,13 @@ def simulate(N, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi=
   pca_df_list=[genotype_df.copy()]
   opt_df = pd.DataFrame(columns=[f'cecha{str(i)}' for i in range(n)])
   opt_df.loc[0] = optimal_genotype
-
+  meteor_list = []
   new_optimal_genotype = optimal_genotype
   for pokolenie in range(time):
     birth_list = []
-    new_optimal_genotype = st.meteor(mi, new_optimal_genotype, opt_genotype_sd, n, speed, meteor_chance)
+    
+    new_optimal_genotype, if_meteor = st.meteor(mi, new_optimal_genotype, opt_genotype_sd, n, speed, meteor_chance)
+    meteor_list.append(if_meteor)
     for i in range(phenotype_df.shape[0]):
         if phenotype_df.iloc[i].phenotype < max_fitness:
           children_count = st.children_roullete(phenotype_df.iloc[i].phenotype, max_fitness)
@@ -70,7 +72,7 @@ def simulate(N, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi=
     pca_pop_and_opt_gen = st.perform_pca(pca_df_list, opt_df)
     st.pca_scatter(pca_pop_and_opt_gen, population_sizes, time, subfolder_path)
   elif n==2:
-    st.two_dim_scatter(pca_df_list, opt_df, population_sizes, time, subfolder_path)
+    st.two_dim_scatter(pca_df_list, opt_df, population_sizes, time, subfolder_path, meteor_list)
   return subfolder_path
   
 import streamlit as stream

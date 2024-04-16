@@ -39,10 +39,10 @@ def calculate_optimal_genotype(mi, genotype, strenght, n, speed):
 
 def meteor(mi, genotype, strenght, n, speed, meteor_chance):
   if random.random() > meteor_chance:
-    return calculate_optimal_genotype(mi, genotype, strenght, n, speed)
+    return calculate_optimal_genotype(mi, genotype, strenght, n, speed), 'NoMeteor'
   else:
     print('meteor')
-    return calculate_optimal_genotype(1, genotype, strenght*3, n, speed*12)
+    return calculate_optimal_genotype(1, genotype, strenght*3, n, speed*12), 'Meteor'
 
 def children_roullete(fitness, max_fitness):
   exponent = (max_fitness - fitness)/15
@@ -100,7 +100,7 @@ def perform_pca(population_list, optimal_genotype_df):
     pca_list.append(pca_df)
   return pca_list
 
-def two_dim_scatter(df_list, opt_df, population_sizes, time, subfolder_path):
+def two_dim_scatter(df_list, opt_df, population_sizes, time, subfolder_path, meteorlist):
   fig, ax = plt.subplots(figsize=(10, 7))
   max_x = 0
   max_y = 0
@@ -141,6 +141,8 @@ def two_dim_scatter(df_list, opt_df, population_sizes, time, subfolder_path):
       ax.tick_params(axis='x')
       ax.set_ylim(1.15*min_y, 1.15 * max_y)
       ax.set_xlim(1.15*min_x, 1.15 * max_x)
+      if meteorlist[frame] == "Meteor":
+        ax.text(0.5, 0.5, "Meteor", color='r')
 
   frames = range(time+1)
   animation = FuncAnimation(fig, update, frames=frames, interval=500)
