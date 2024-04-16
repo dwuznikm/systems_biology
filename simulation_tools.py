@@ -142,7 +142,7 @@ def two_dim_scatter(df_list, opt_df, population_sizes, time, subfolder_path, met
       ax.set_ylim(1.15*min_y, 1.15 * max_y)
       ax.set_xlim(1.15*min_x, 1.15 * max_x)
       if meteorlist[frame] == "Meteor":
-        ax.text(0.5, 0.5, "Meteor", color='r')
+        ax.text(0.5, 0.9, "Meteor", color='r', horizontalalignment='center', verticalalignment='top', transform=ax.transAxes)
 
   frames = range(time+1)
   animation = FuncAnimation(fig, update, frames=frames, interval=500)
