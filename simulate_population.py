@@ -71,6 +71,7 @@ def simulate(N, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi=
     st.pca_scatter(pca_pop_and_opt_gen, population_sizes, time, subfolder_path)
   elif n==2:
     st.two_dim_scatter(pca_df_list, opt_df, population_sizes, time, subfolder_path)
+  return subfolder_path
   
 import streamlit as stream
 
