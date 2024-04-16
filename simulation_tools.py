@@ -136,7 +136,8 @@ def two_dim_scatter(df_list, opt_df, population_sizes, time, subfolder_path):
       ax.scatter(df_list[frame]['cecha0'], df_list[frame]['cecha1'], color='blue', label='Population', alpha=0.5)
       ax.scatter(opt_df['cecha0'].iloc[frame], opt_df['cecha1'].iloc[frame], color='red', marker='s', s=100, label='Optimal Genotype')
       ax.set_title(f'Genotypy osobników w pokoleniu {str(frame)}')
-      ax.text(1, 1, f'Population size: {population_sizes[frame]}')
+      #ax.set_xlabel(f'Population size: {population_sizes[frame]}')
+      ax.text(0.5, -0.1, f'Population size: {population_sizes[frame]}', ha='center', transform=ax.transAxes)
       ax.tick_params(axis='x')
       ax.set_ylim(1.15*min_y, 1.15 * max_y)
       ax.set_xlim(1.15*min_x, 1.15 * max_x)
@@ -173,7 +174,8 @@ def pca_scatter(df_list, time, population_sizes, subfolder_path):
       ax.scatter(df_list[frame].iloc[-1]['PCA1'], df_list[frame].iloc[-1]['PCA2'], color='red', marker='s', s=100, label='Optimal Genotype')
       ax.tick_params(axis='x')
       #fix placement
-      ax.text(0, 0.95, f'Population size: {population_sizes[frame]}')
+      ax.text(0.5, -0.1, f'Population size: {population_sizes[frame]}', ha='center', transform=ax.transAxes)
+      #ax.set_xlabel(f'Population size: {population_sizes[frame]}')
       ax.set_ylim(1.15*min_y, 1.15 * max_y)
       ax.set_xlim(1.15*min_x, 1.15 * max_x)
       
