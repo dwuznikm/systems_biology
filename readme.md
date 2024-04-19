@@ -1,6 +1,6 @@
-Model ewolucyjny w oparciu o Geometryczny Model Fishera (GMF)
+# Model ewolucyjny w oparciu o Geometryczny Model Fishera (GMF)
 
-Opis projektu
+## Opis projektu
 
 W tym projekcie, staraliśmy się przedstawić sukcesywną adaptację organizmów do nieustannie zachodzących w środowisku zmian. Opisujemy tutaj ewolucję populacji P, składającej się z osobników o genotypie składającym się z n cech w zadanym środowisku. 
 
@@ -17,5 +17,5 @@ Wprowadzone zostało także zjawisko meteoryt, czyli drastyczną zmianę optymal
 Niestety, problematycznym narzędziem okazało się być PCA, które nie wizualizuje poprawnej odległości między genotypami osobników a optymalnym genotypem. Dlatego też, wizualizacje przedstawimy, na przykładzie dwóch cech genotypu. 
 
 
-Requirements
+## Requirements
 Aby zainstalować niezbędne biblioteki skorzystaj z komendy: pip install -r requirements.txt
