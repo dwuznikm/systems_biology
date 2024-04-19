@@ -21,6 +21,7 @@ def fitness(optimal_genotype, genotype):
     suma_kwadratow_roznicy = sum((a - b)**2 for a, b in zip(optimal_genotype, genotype))
     fitness_value = math.sqrt(suma_kwadratow_roznicy)
     fitness_value /= len(optimal_genotype)
+
     return fitness_value
 
 
@@ -52,40 +53,41 @@ def children_roullete(fitness, max_fitness):
 
 def calculate_max_fitness(population, n, mode):
   if mode == 'Limited resources':
-    return min(max(500/population, 1), 13)/n
+    return min(max(500*(2/3*n)/population, 1), 13)/n
   elif mode == 'Standard':
-    return min(max(1200/population, 2), 14)/n
+    return min(max(1500*(2/3*n)/population, 2), 14)/n
   elif mode == 'Many resources':
-    return min(max(2000/population, 3), 15)/n
+    return min(max(2000*(2/3*n)/population, 3), 15)/n
 
 
 def create_plot(values, time, subfolder_path, data_type):
-  
-  life = {'x':[], 'y':[]}
-  fig, ax = plt.subplots(figsize=(10, 7))
-  
-  def update(frame):
-      ax.clear()
-      life['x'].append(frame)
-      life['y'].append(values[frame])
-      ax.plot(life['x'], life['y'], linestyle='-', linewidth=2, color='lightpink')
-      
-      if data_type == 'population':
-        ax.set_title(f'Liczebność populacji w pokoleniu {str(frame)}')
-        ax.set_xlabel('Pokolenie')
-        ax.set_ylabel('Populacja')
+  if time!=0:
+    life = {'x':[], 'y':[]}
+    fig, ax = plt.subplots(figsize=(10, 7))
+    print(values)
+    
+    def update(frame):
+        ax.clear()
+        life['x'].append(frame)
+        life['y'].append(values[frame])
+        ax.plot(life['x'], life['y'], linestyle='-', linewidth=2, color='lightpink')
         
-      elif data_type == 'fitness':
-        ax.set_title(f'Średni fitness w pokoleniu {str(frame)}')
-        ax.set_xlabel('Pokolenie')
-        ax.set_ylabel('Fitness')
-      ax.tick_params(axis='x')
-      ax.set_ylim(0, 1.15 * max(values))
-      ax.set_xlim(0, time)
-  frames = range(time+1)
-  animation = FuncAnimation(fig, update, frames=frames, interval=500)
-  animation.save(os.path.join(subfolder_path, f'{data_type}.gif'), writer='pillow')
-  fig.savefig(os.path.join(subfolder_path, f'{data_type}_final.jpg'))
+        if data_type == 'population':
+          ax.set_title(f'Liczebność populacji w pokoleniu {str(frame)}')
+          ax.set_xlabel('Pokolenie')
+          ax.set_ylabel('Populacja')
+          
+        elif data_type == 'fitness':
+          ax.set_title(f'Średni fitness w pokoleniu {str(frame)}')
+          ax.set_xlabel('Pokolenie')
+          ax.set_ylabel('Fitness')
+        ax.tick_params(axis='x')
+        ax.set_ylim(0, 1.15 * max(values))
+        ax.set_xlim(0, time)
+    frames = range(time+1)
+    animation = FuncAnimation(fig, update, frames=frames, interval=500)
+    animation.save(os.path.join(subfolder_path, f'{data_type}.gif'), writer='pillow')
+    fig.savefig(os.path.join(subfolder_path, f'{data_type}_final.jpg'))
 
 
 def perform_pca(population_list, optimal_genotype_df):
@@ -98,90 +100,97 @@ def perform_pca(population_list, optimal_genotype_df):
     pca_result = pca.fit_transform(data)
     pca_df = pd.DataFrame(data=pca_result, columns=['PCA1', 'PCA2'])
     pca_list.append(pca_df)
+  print(len(pca_list))
   return pca_list
 
 def two_dim_scatter(df_list, opt_df, population_sizes, time, subfolder_path, meteorlist):
-  fig, ax = plt.subplots(figsize=(10, 7))
-  max_x = 0
-  max_y = 0
-  min_x = 0
-  min_y= 0
-  for df in df_list:
-    maximum_x = df["cecha0"].max()
-    maximum_y = df["cecha1"].max()
-    if maximum_x > max_x:
-      max_x = maximum_x
-    if maximum_y > max_y:
-      max_y = maximum_y
-  if opt_df["cecha0"].max() > max_x:
-    max_x = opt_df["cecha0"].max()
-  if opt_df["cecha1"].max() > max_y:
-    max_y = opt_df["cecha1"].max()
+  if time!=0:
+    fig, ax = plt.subplots(figsize=(10, 7))
+    max_x = 0
+    max_y = 0
+    min_x = 0
+    min_y= 0
+    for df in df_list:
+      maximum_x = df["cecha0"].max()
+      maximum_y = df["cecha1"].max()
+      if maximum_x > max_x:
+        max_x = maximum_x
+      if maximum_y > max_y:
+        max_y = maximum_y
+    if opt_df["cecha0"].max() > max_x:
+      max_x = opt_df["cecha0"].max()
+    if opt_df["cecha1"].max() > max_y:
+      max_y = opt_df["cecha1"].max()
 
-  for df in df_list:
-    minimum_x = df["cecha0"].min()
-    minimum_y = df["cecha1"].min()
-    if minimum_x < min_x:
-      min_x = minimum_x
-    if minimum_y < min_y:
-      min_y = minimum_y
+    for df in df_list:
+      minimum_x = df["cecha0"].min()
+      minimum_y = df["cecha1"].min()
+      if minimum_x < min_x:
+        min_x = minimum_x
+      if minimum_y < min_y:
+        min_y = minimum_y
 
-  if opt_df["cecha0"].min() < min_x:
-    min_x = opt_df["cecha0"].min()
-  if opt_df["cecha1"].min() < min_y:
-    min_y = opt_df["cecha1"].min()
+    if opt_df["cecha0"].min() < min_x:
+      min_x = opt_df["cecha0"].min()
+    if opt_df["cecha1"].min() < min_y:
+      min_y = opt_df["cecha1"].min()
 
-  def update(frame):
-      ax.clear()
-      ax.scatter(df_list[frame]['cecha0'], df_list[frame]['cecha1'], color='blue', label='Population', alpha=0.5)
-      ax.scatter(opt_df['cecha0'].iloc[frame], opt_df['cecha1'].iloc[frame], color='red', marker='s', s=100, label='Optimal Genotype')
-      ax.set_title(f'Genotypy osobników w pokoleniu {str(frame)}')
-      #ax.set_xlabel(f'Population size: {population_sizes[frame]}')
-      ax.text(0.5, -0.1, f'Population size: {population_sizes[frame]}', ha='center', transform=ax.transAxes)
-      ax.tick_params(axis='x')
-      ax.set_ylim(1.15*min_y, 1.15 * max_y)
-      ax.set_xlim(1.15*min_x, 1.15 * max_x)
-      if meteorlist[frame] == "Meteor":
-        ax.text(0.5, 0.9, "Meteor", color='r', horizontalalignment='center', verticalalignment='top', transform=ax.transAxes)
+    def update(frame):
+        ax.clear()
+        ax.scatter(df_list[frame]['cecha0'], df_list[frame]['cecha1'], color='blue', label='Population', alpha=0.5)
+        ax.scatter(opt_df['cecha0'].iloc[frame], opt_df['cecha1'].iloc[frame], color='red', marker='s', s=100, label='Optimal Genotype')
+        ax.set_title(f'Genotypy osobników w pokoleniu {str(frame)}')
+        #ax.set_xlabel(f'Population size: {population_sizes[frame]}')
+        ax.text(0.5, -0.1, f'Population size: {population_sizes[frame]}', ha='center', transform=ax.transAxes)
+        ax.tick_params(axis='x')
+        ax.set_ylim(1.15*min_y, 1.15 * max_y)
+        ax.set_xlim(1.15*min_x, 1.15 * max_x)
+        if meteorlist[frame-1] == "Meteor":
+          ax.text(0.5, 0.9, "Meteor", color='r', horizontalalignment='center', verticalalignment='top', transform=ax.transAxes)
 
-  frames = range(time+1)
-  animation = FuncAnimation(fig, update, frames=frames, interval=500)
-  animation.save(os.path.join(subfolder_path, f'2d.gif'), writer='pillow')
+    frames = range(time+1)
+    animation = FuncAnimation(fig, update, frames=frames, interval=500)
+    animation.save(os.path.join(subfolder_path, f'2d.gif'), writer='pillow')
 
-def pca_scatter(df_list, time, population_sizes, subfolder_path):
-  fig, ax = plt.subplots(figsize=(10, 7))
-  max_x = 0
-  max_y = 0
-  min_x = 0
-  min_y= 0
-  for pca_df in df_list:
-    maximum_x = pca_df["PCA1"].max()
-    maximum_y = pca_df["PCA2"].max()
-    if maximum_x > max_x:
-      max_x = maximum_x
-    if maximum_y > max_y:
-      max_y = maximum_y
+def pca_scatter(df_list, time, population_sizes, subfolder_path, meteorlist):
+  if time!=0:
+    fig, ax = plt.subplots(figsize=(10, 7))
+    max_x = 0
+    max_y = 0
+    min_x = 0
+    min_y= 0
+    for pca_df in df_list:
+      maximum_x = pca_df["PCA1"].max()
+      maximum_y = pca_df["PCA2"].max()
+      if maximum_x > max_x:
+        max_x = maximum_x
+      if maximum_y > max_y:
+        max_y = maximum_y
 
-  for pca_df in df_list:
-    minimum_x = pca_df["PCA1"].min()
-    minimum_y = pca_df["PCA2"].min()
-    if minimum_x < min_x:
-      min_x = minimum_x
-    if minimum_y < min_y:
-      min_y = minimum_y
+    for pca_df in df_list:
+      minimum_x = pca_df["PCA1"].min()
+      minimum_y = pca_df["PCA2"].min()
+      if minimum_x < min_x:
+        min_x = minimum_x
+      if minimum_y < min_y:
+        min_y = minimum_y
 
-  def update(frame):
-      ax.clear()
-      ax.scatter(df_list[frame]['PCA1'][:-1], df_list[frame]['PCA2'][:-1], color='blue', label='Population', alpha=0.5)
-      ax.scatter(df_list[frame].iloc[-1]['PCA1'], df_list[frame].iloc[-1]['PCA2'], color='red', marker='s', s=100, label='Optimal Genotype')
-      ax.tick_params(axis='x')
-      #fix placement
-      ax.text(0.5, -0.1, f'Population size: {population_sizes[frame]}', ha='center', transform=ax.transAxes)
-      #ax.set_xlabel(f'Population size: {population_sizes[frame]}')
-      ax.set_ylim(1.15*min_y, 1.15 * max_y)
-      ax.set_xlim(1.15*min_x, 1.15 * max_x)
+    def update(frame):
+        ax.clear()
+        ax.scatter(df_list[frame]['PCA1'][:-1], df_list[frame]['PCA2'][:-1], color='blue', label='Population', alpha=0.5)
+        ax.scatter(df_list[frame].iloc[-1]['PCA1'], df_list[frame].iloc[-1]['PCA2'], color='red', marker='s', s=100, label='Optimal Genotype')
+        ax.tick_params(axis='x')
+        ax.set_title(f'Genotypy osobników w pokoleniu {str(frame)}')
+        #fix placement
+        ax.text(0.5, -0.1, f'Population size: {population_sizes[frame]}', ha='center', transform=ax.transAxes)
+        #ax.set_xlabel(f'Population size: {population_sizes[frame]}')
+        ax.set_ylim(1.15*min_y, 1.15 * max_y)
+        ax.set_xlim(1.15*min_x, 1.15 * max_x)
+        if meteorlist[frame-1] == "Meteor":
+          ax.text(0.5, 0.9, "Meteor", color='r', horizontalalignment='center', verticalalignment='top', transform=ax.transAxes)
+
+        
       
-    
-  frames = range(time+1)
-  animation = FuncAnimation(fig, update, frames=frames, interval=500)
-  animation.save(os.path.join(subfolder_path, f'2d.gif'), writer='pillow')
+    frames = range(time+1)
+    animation = FuncAnimation(fig, update, frames=frames, interval=500)
+    animation.save(os.path.join(subfolder_path, f'2d.gif'), writer='pillow')
