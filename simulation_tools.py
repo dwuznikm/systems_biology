@@ -53,7 +53,7 @@ def children_roullete(fitness, max_fitness):
 
 def calculate_max_fitness(population, n, mode):
   if mode == 'Limited resources':
-    return min(max(1000*(2/3*n)/population, 1), 13)/n
+    return min(max(700*(2/3*n)/population, 1), 13)/n
   elif mode == 'Standard':
     return min(max(1800*(2/3*n)/population, 2), 14)/n
   elif mode == 'Many resources':
