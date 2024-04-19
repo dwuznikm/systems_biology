@@ -8,9 +8,13 @@ Do wizualizacji aplikacji użyliśmy frameworku Streamlit, który pozwala na wyb
 
 Rozważamy populację rozmnażającą się bezpłciowo, z osobnikami żyjącym tylko w jednym pokoleniu - na każde kolejne pokolenie składają się dzieci osobników z poprzedniego pokolenia. W populacji występuje optymalny genotyp, do którego dążą osobniki, a miarą ich dopasowania jest fitness, czyli odległość euklidesowa cech genotypu.
 W modelu wprowadziliśmy także trzy tryby, które pozwalają na wybór ilości zasobów środowiska i będą wpływać na elastyczność dopasowania, a co za tym idzie także na liczebność populacji:
+
 -'Limited resources'
+
 -'Standard':
+
 -'Many resources'
+
 Liczba potomstwa opisana jest rozkładem Poissona oraz aby ograniczyć zbytni przyrost populacji ograniczyliśmy ją do 8.
 Wprowadzone zostało także zjawisko meteoryt, czyli drastyczną zmianę optymalnego genotypu zgodnie z kierunkiem globalnego ocieplenia, która powoduje gwałtowną śmierć wielu osobników.
 
