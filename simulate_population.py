@@ -7,6 +7,7 @@ from matplotlib.animation import FuncAnimation
 from datetime import datetime
 import os
 import simulation_tools as st
+import streamlit as stream
 
 
 
@@ -81,71 +82,59 @@ def simulate(N, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi=
   return subfolder_path
 
 
-N0=500
-n=9
-time=20
-opt_geno = 0.5
-pop_geno= 0.5
-speed = 0.1
-resource = 'Many resources'
-mi = 0.3
-meteor = 0.00
+#Tworzenie interfejsu użytkownika za pomocą Streamlit
+stream.title("Symulator populacji")
 
-simulate(N0, n, time, opt_geno, pop_geno, speed, resource, mi, meteor)
-  
-#import streamlit as stream
-
-
-
-# # Parametry symulacji
-
-# N0 = stream.number_input("Początkowa liczba osobników (N)", min_value=100, max_value=1000, value=500, step=10)
-# n = stream.number_input("Liczba cech genetycznych (n)", min_value=1, max_value=10, value=2, step=1)
-# time = stream.number_input("Liczba pokoleń (time)", min_value=10, max_value=200, value=100, step=10)
-# opt_genotype_sd = stream.number_input("Odchylenie standardowe dla genotypu optymalnego", min_value=0.1, max_value=1.0, value=0.2, step=0.1)
-# pop_genotype_sd = stream.number_input("Odchylenie standardowe dla genotypu populacji", min_value=0.1, max_value=1.0, value=0.5, step=0.1)
-# speed = stream.number_input("Prędkość mutacji (speed)", min_value=0.1, max_value=1.0, value=0.2, step=0.1)
-# resources = stream.selectbox("Poziom zasobów", ["Many resources", "Standard", "Limited resources"])
-# mi = stream.slider("Współczynnik mutacji (mi)", min_value=0.1, max_value=1.0, value=0.5, step=0.1)
-# meteor_chance = stream.slider("Szansa na wystąpienie zjawiska meteoru", min_value=0.0, max_value=1.0, value=0.5, step=0.01)
+#Parametry symulacji
+N0 = stream.number_input("Początkowa liczba osobników (N)", min_value=100, max_value=10000, value=500, step=10)
+n = stream.number_input("Liczba cech genetycznych (n)", min_value=1, max_value=10, value=2, step=1)
+time = stream.number_input("Liczba pokoleń (time)", min_value=10, max_value=1000, value=100, step=10)
+opt_genotype_sd = stream.number_input("Odchylenie standardowe dla genotypu optymalnego", min_value=0.1, max_value=1.0, value=0.5, step=0.1)
+pop_genotype_sd = stream.number_input("Odchylenie standardowe dla genotypu populacji", min_value=0.1, max_value=1.0, value=0.5, step=0.1)
+speed = stream.number_input("Prędkość mutacji (speed)", min_value=0.1, max_value=1.0, value=0.2, step=0.1)
+resources = stream.selectbox("Poziom zasobów", ["Many resources", "Standard", "Limited resources"])
+mi = stream.slider("Współczynnik mutacji (mi)", min_value=0.1, max_value=1.0, value=0.5, step=0.1)
+meteor_chance = stream.slider("Szansa na wystąpienie zjawiska meteoru", min_value=0.0, max_value=1.0, value=0.05, step=0.01)
 
 
 
-# # Definicja funkcji symulacji w aplikacji Streamlit
-# def simulate_streamlit(N, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi, meteor_chance):
-#     stream.write("Symulacja rozpoczęta...")
-#     stream.write(f"Parametry symulacji: N={N}, n={n}, time={time}, opt_genotype_sd={opt_genotype_sd}, pop_genotype_sd={pop_genotype_sd}, speed={speed}, resources={resources}, mi={mi}, meteor_chance={meteor_chance}")
+#Definicja funkcji symulacji w aplikacji Streamlit
+def simulate_streamlit(N, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi, meteor_chance):
+    stream.write("Symulacja rozpoczęta...")
+    stream.write(f"Parametry symulacji: N={N}, n={n}, time={time}, opt_genotype_sd={opt_genotype_sd}, pop_genotype_sd={pop_genotype_sd}, speed={speed}, resources={resources}, mi={mi}, meteor_chance={meteor_chance}")
 
-#       # Wywołanie istniejącej funkcji symulacji
-#     actual_path=simulate(N, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi, meteor_chance)
+    # Wywołanie istniejącej funkcji symulacji
+    actual_path=simulate(N, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi, meteor_chance)
 
-#     stream.write("Symulacja zakończona. Wyniki zapisane w folderze 'results'.")
-#     return actual_path
+    stream.write("Symulacja zakończona. Wyniki zapisane w folderze 'results'.")
+    return actual_path
 
 
 
-# # Funkcja do ładowania wykresów z podfolderów w folderze wynikowym
-# def load_plots_from_folders(results_folder_path):
-#     plots = []
-#     # for date_folder in os.listdir(results_folder_path):
-#     #     date_folder_path = os.path.join(results_folder_path, date_folder)
-#     if os.path.isdir(results_folder_path):
-#         for file_name in os.listdir(results_folder_path):
-#             if file_name.endswith(".jpg") or file_name.endswith(".gif"):
-#                 file_path = os.path.join(results_folder_path, file_name)
-#                 plots.append(file_path)
-#     return plots
+#Funkcja do ładowania wykresów z podfolderów w folderze wynikowym
+def load_plots_from_folders(results_folder_path):
+    plots = []
+    # for date_folder in os.listdir(results_folder_path):
+    #     date_folder_path = os.path.join(results_folder_path, date_folder)
+    if os.path.isdir(results_folder_path):
+        for file_name in os.listdir(results_folder_path):
+            if file_name.endswith(".jpg") or file_name.endswith(".gif"):
+                file_path = os.path.join(results_folder_path, file_name)
+                plots.append(file_path)
+    return plots
 
-# # Tworzenie interfejsu użytkownika za pomocą Streamlit
-# stream.title("Symulator populacji")
+#Przycisk uruchamiający symulację
+if stream.button("Uruchom symulację"):
+    actual_path=simulate_streamlit(N0, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi, meteor_chance)
+    print(actual_path)
 
-# # Przycisk uruchamiający symulację
-# if stream.button("Uruchom symulację"):
-#     actual_path=simulate_streamlit(N0, n, time, opt_genotype_sd, pop_genotype_sd, speed, resources, mi, meteor_chance)
-#     print(actual_path)
+    # Ładowanie wykresów z podfolderów w folderze wynikowym
+    plots = load_plots_from_folders(actual_path)
 
-#     # Ładowanie wykresów z podfolderów w folderze wynikowym
-#     plots = load_plots_from_folders(actual_path)
-#     stream.markdown("### Wykresy:")
-#     for plot in plots:
-#       stream.image(plot, caption=os.path.basename(plot), use_column_width=True)
+    if len(plots) == 0:
+       stream.markdown('#### Populacja wymarła w pierwszym pokoleniu.')
+    else:
+      stream.markdown("### Wykresy:")
+      for plot in plots:
+        stream.image(plot, caption=os.path.basename(plot), use_column_width=True)
+    

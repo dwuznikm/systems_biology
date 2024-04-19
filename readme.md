@@ -14,8 +14,7 @@ W modelu wprowadziliśmy także trzy tryby, które pozwalają na wybór ilości 
 Liczba potomstwa opisana jest rozkładem Poissona oraz aby ograniczyć zbytni przyrost populacji ograniczyliśmy ją do 8.
 Wprowadzone zostało także zjawisko meteoryt, czyli drastyczną zmianę optymalnego genotypu zgodnie z kierunkiem globalnego ocieplenia, która powoduje gwałtowną śmierć wielu osobników.
 
-Niestety, problematycznym narzędziem okazało się być PCA, które nie wizualizuje poprawnej odległości między genotypami osobników a optymalnym genotypem. Dlatego też, wizualizacje przedstawimy, na przykładzie dwóch cech genotypu. 
-
+Jeśli genotyp składa się z więcej niż 2 cech, przeprowadzone zostaje PCA, by zredukować liczbę wymiarów i umożliwić wizualizację. Jednakże na wykresach można odnieść wrażenie, iż genotypy osobników "nie podążają" za optymalnym genotypem, dlatego zachęcamy do weryfikacji.
 
 ## Requirements
 Aby zainstalować niezbędne biblioteki skorzystaj z komendy: pip install -r requirements.txt
