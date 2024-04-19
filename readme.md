@@ -4,7 +4,7 @@
 
 W tym projekcie, staraliśmy się przedstawić sukcesywną adaptację organizmów do nieustannie zachodzących w środowisku zmian. Opisujemy tutaj ewolucję populacji P, składającej się z osobników o genotypie składającym się z n cech w zadanym środowisku. 
 
-Do wizualizacji aplikacji użyliśmy frameworku Streamlit, który pozwala na wybór parametróe i wizualizację zachodzących procesów. 
+By stworzyć aplikację, skorzystaliśmy z frameworku Streamlit, który pozwala na wybór parametrów i wizualizację zachodzących procesów. 
 
 Rozważamy populację rozmnażającą się bezpłciowo, z osobnikami żyjącym tylko w jednym pokoleniu - na każde kolejne pokolenie składają się dzieci osobników z poprzedniego pokolenia. W populacji występuje optymalny genotyp, do którego dążą osobniki, a miarą ich dopasowania jest fitness, czyli odległość euklidesowa cech genotypu.
 W modelu wprowadziliśmy także trzy tryby, które pozwalają na wybór ilości zasobów środowiska i będą wpływać na elastyczność dopasowania, a co za tym idzie także na liczebność populacji:
